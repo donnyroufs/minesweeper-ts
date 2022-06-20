@@ -20,17 +20,17 @@ export class Board {
     const grid: Grid = []
     let currentBombs = 0
 
-    for (let y = 0; y < size; y++) {
-      grid[y] = []
-      for (let x = 0; x < size; x++) {
+    for (let x = 0; x < size; x++) {
+      grid[x] = []
+      for (let y = 0; y < size; y++) {
         if (currentBombs < bombs && Math.random() > 0.5) {
-          grid[y].push(new Bomb())
+          grid[x].push(new Bomb())
           currentBombs++
 
           continue
         }
 
-        grid[y].push(new Neutral())
+        grid[x].push(new Neutral())
       }
     }
 
