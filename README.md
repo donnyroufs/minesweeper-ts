@@ -1,0 +1,3 @@
+- [ ] Play the game
+- [ ] Save / Load game
+- [ ] Allow to subscribe to events
