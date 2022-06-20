@@ -1,19 +1,30 @@
 import { Bomb } from "./Bomb"
 import { Cell } from "./Cell"
-import { DeepFreeze } from "./DeepFreeze"
 import { Neutral } from "./Neutral"
+import { Position } from "./Position"
+import { UnknownCellException } from "./UnknownCellException"
 
 type Grid = Cell[][]
 
 export class Board {
-  private readonly grid: Readonly<Grid>
+  private readonly grid: Grid
 
   public constructor(size: number, bombs: number) {
     this.grid = this.createGrid(size, bombs)
   }
 
-  public getGrid(): Readonly<Grid> {
-    return DeepFreeze.freeze(this.grid)
+  public getGrid(): Grid {
+    return this.grid
+  }
+
+  public getCell(position: Position): Cell {
+    const cell = this.grid[position.x][position.y]
+
+    if (!cell) {
+      throw new UnknownCellException()
+    }
+
+    return cell
   }
 
   private createGrid(size: number, bombs: number) {
