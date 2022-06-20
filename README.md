@@ -1,3 +1,1 @@
-- [ ] Play the game
-- [ ] Save / Load game
-- [ ] Allow to subscribe to events
+Fun side project in ts in TDD driven by OO
