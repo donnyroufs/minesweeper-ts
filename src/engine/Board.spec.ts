@@ -30,4 +30,30 @@ describe("board", () => {
     expect(totalBombs).toBe(bombCount)
     expect(totalNeutralCells).toBe(size * size - bombCount)
   })
+
+  test("calculates the neighbor bomb count for each Neutral cell", () => {
+    const board = createThreeByThreeBoard(1)
+    const neutralCell = board
+      .getGrid()
+      .flat()
+      .filter((c) => !(c instanceof Bomb))
+      .at(0)!
+
+    expect((neutralCell as Neutral).getBombCount()).toBe(1)
+  })
+
+  test("returns 0 when there are no bombs around", () => {
+    const board = createThreeByThreeBoard(0)
+    const neutralCell = board
+      .getGrid()
+      .flat()
+      .filter((c) => !(c instanceof Bomb))
+      .at(0)!
+
+    expect((neutralCell as Neutral).getBombCount()).toBe(0)
+  })
 })
+
+function createThreeByThreeBoard(bombCount = 1): Board {
+  return new Board(3, bombCount)
+}
