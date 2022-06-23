@@ -27,6 +27,10 @@ export class Board {
     return cell
   }
 
+  public hasUnrevealedNeutrals(): boolean {
+    return this._grid.flat().some((c) => !c.isRevealed)
+  }
+
   // TODO: Shuffle bombs (lodash)
   private createGrid(size: number, bombs: number): Grid {
     const grid: Grid = []
