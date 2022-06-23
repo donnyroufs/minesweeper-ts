@@ -1,16 +1,15 @@
-import { Board } from "./Board"
 import { Bomb } from "./Bomb"
+import { GridGenerator } from "./GridGenerator"
 import { Neutral } from "./Neutral"
 
-describe("board", () => {
+describe("grid generator", () => {
   test.each([
     [3, 1],
     [5, 5],
     [10, 10],
   ])("creates a a grid of size %i with %i bombs", (size, bombCount) => {
-    const board = new Board(size, bombCount)
+    const grid = new GridGenerator().generate(size, bombCount)
 
-    const grid = board.getGrid()
     const totalBombs = grid.flat().reduce((acc, curr) => {
       if (curr instanceof Bomb) {
         acc += 1
@@ -32,9 +31,8 @@ describe("board", () => {
   })
 
   test("calculates the neighbor bomb count for each Neutral cell", () => {
-    const board = new Board(2, 1)
-    const neutralCell = board
-      .getGrid()
+    const grid = new GridGenerator().generate(2, 1)
+    const neutralCell = grid
       .flat()
       .filter((c) => !(c instanceof Bomb))
       .at(0)!
@@ -43,9 +41,8 @@ describe("board", () => {
   })
 
   test("returns 0 when there are no bombs around", () => {
-    const board = new Board(3, 0)
-    const neutralCell = board
-      .getGrid()
+    const grid = new GridGenerator().generate(2, 0)
+    const neutralCell = grid
       .flat()
       .filter((c) => !(c instanceof Bomb))
       .at(0)!
