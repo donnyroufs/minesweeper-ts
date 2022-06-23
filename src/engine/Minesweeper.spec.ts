@@ -1,6 +1,4 @@
-import { Board } from "./Board"
 import { Bomb } from "./Bomb"
-import { Cell } from "./Cell"
 import { GameStatus } from "./GameStatus"
 import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
