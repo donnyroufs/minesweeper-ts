@@ -39,7 +39,7 @@ describe("minesweeper", () => {
   })
 
   test("we lose the game when we reveal a bomb", () => {
-    const board = new Board(1, 2)
+    const board = new Board(1, 1)
     const game = new Minesweeper(board)
 
     expect(game.getGameStatus()).toBe(GameStatus.Playing)
