@@ -11,6 +11,8 @@ describe("minesweeper", () => {
     const game = new Minesweeper(board)
     const pos = new Position(1, 1)
 
+    game.start()
+
     game.reveal(pos)
 
     expect(board.getGrid()[pos.x][pos.y].isRevealed()).toBe(true)
@@ -20,6 +22,7 @@ describe("minesweeper", () => {
     const board = new Board(10, 10)
     const game = new Minesweeper(board)
     const pos = new Position(1, 1)
+    game.start()
 
     game.reveal(pos)
     game.reveal(pos)
@@ -31,6 +34,7 @@ describe("minesweeper", () => {
     const board = new Board(2, 0)
     const game = new Minesweeper(board)
     const pos = new Position(1, 5)
+    game.start()
 
     const act = () => game.reveal(pos)
 
@@ -83,6 +87,18 @@ describe("minesweeper", () => {
     expect(game.getGameStatus()).toBe(GameStatus.Playing)
   })
 
+  test("we cannot reveal or flag a cell if the game has not been started", () => {
+    const board = new Board(2, 1)
+    const game = new Minesweeper(board)
+    const pos = new Position(0, 0)
+
+    game.reveal(pos)
+    game.flag(pos)
+
+    expect(board.getCell(pos).isRevealed()).toBe(false)
+    expect(board.getCell(pos).isFlagged()).toBe(false)
+  })
+
   test("if we try to reveal a cell thats been flagged we do nothing", () => {
     const board = new Board(2, 1)
     const game = new Minesweeper(board)
@@ -91,6 +107,7 @@ describe("minesweeper", () => {
 
     game.flag(pos)
     game.reveal(pos)
+
     expect(board.getCell(pos).isRevealed()).toBe(false)
   })
 })

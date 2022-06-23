@@ -18,7 +18,10 @@ export class Minesweeper {
   }
 
   public reveal(position: Position): void {
+    if (!this.isPlaying()) return
+
     const cell = this._board.getCell(position)
+
     cell.reveal()
 
     if (cell instanceof Bomb) {
@@ -33,6 +36,7 @@ export class Minesweeper {
   }
 
   public flag(position: Position): void {
+    if (!this.isPlaying()) return
 
     this._board.getCell(position).flag()
   }
