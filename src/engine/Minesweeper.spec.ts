@@ -83,4 +83,14 @@ describe("minesweeper", () => {
     expect(game.getGameStatus()).toBe(GameStatus.Playing)
   })
 
+  test("if we try to reveal a cell thats been flagged we do nothing", () => {
+    const board = new Board(2, 1)
+    const game = new Minesweeper(board)
+    const pos = new Position(0, 0)
+    game.start()
+
+    game.flag(pos)
+    game.reveal(pos)
+    expect(board.getCell(pos).isRevealed()).toBe(false)
+  })
 })

@@ -32,6 +32,11 @@ export class Minesweeper {
     }
   }
 
+  public flag(position: Position): void {
+
+    this._board.getCell(position).flag()
+  }
+
   public getGameStatus(): GameStatus {
     return this._gameStatus
   }
