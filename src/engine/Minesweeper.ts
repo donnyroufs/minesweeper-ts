@@ -5,10 +5,16 @@ import { Position } from "./Position"
 
 export class Minesweeper {
   private readonly _board: Board
-  private _gameStatus: GameStatus = GameStatus.Playing
+  private _gameStatus: GameStatus = GameStatus.Idle
 
   public constructor(board: Board) {
     this._board = board
+  }
+
+  public start(): void {
+    if (this.isPlaying()) return
+
+    this._gameStatus = GameStatus.Playing
   }
 
   public reveal(position: Position): void {
@@ -28,5 +34,9 @@ export class Minesweeper {
 
   public getGameStatus(): GameStatus {
     return this._gameStatus
+  }
+
+  private isPlaying(): boolean {
+    return this._gameStatus === GameStatus.Playing
   }
 }

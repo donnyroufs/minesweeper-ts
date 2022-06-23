@@ -2,7 +2,6 @@ import { Board } from "./Board"
 import { Bomb } from "./Bomb"
 import { GameStatus } from "./GameStatus"
 import { Minesweeper } from "./Minesweeper"
-import { Neutral } from "./Neutral"
 import { Position } from "./Position"
 import { UnknownCellException } from "./UnknownCellException"
 
@@ -42,7 +41,7 @@ describe("minesweeper", () => {
     const board = new Board(1, 1)
     const game = new Minesweeper(board)
 
-    expect(game.getGameStatus()).toBe(GameStatus.Playing)
+    game.start()
 
     game.reveal(new Position(0, 0))
 
@@ -57,10 +56,31 @@ describe("minesweeper", () => {
       .flat()
       .filter((cell) => !(cell instanceof Bomb))
 
-    expect(game.getGameStatus()).toBe(GameStatus.Playing)
+    game.start()
 
     neutrals.forEach((n) => game.reveal(n.getPosition()))
 
     expect(game.getGameStatus()).toBe(GameStatus.Won)
   })
+
+  test("we can start the game which sets the status to playing", () => {
+    const board = new Board(2, 1)
+    const game = new Minesweeper(board)
+
+    game.start()
+
+    expect(game.getGameStatus()).toBe(GameStatus.Playing)
+  })
+
+  test("if we try to start a game thats already playing we do nothing", () => {
+    const board = new Board(2, 1)
+    const game = new Minesweeper(board)
+
+    expect(game.getGameStatus()).toBe(GameStatus.Idle)
+
+    game.start()
+
+    expect(game.getGameStatus()).toBe(GameStatus.Playing)
+  })
+
 })
