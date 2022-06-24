@@ -10,7 +10,6 @@ export class GridGenerator implements IGridGenerator {
     return this.createGrid(size, bombCount)
   }
 
-  // TODO: Generate bombs at random locations
   private createGrid(size: number, bombCount: number): Grid {
     const grid: Grid = []
     let currentBombs = 0
@@ -29,6 +28,26 @@ export class GridGenerator implements IGridGenerator {
       }
     }
 
+    this.shuffleCells(size, grid)
+    this.setBombCountOnNeutralCells(size, grid)
+
+    return grid
+  }
+
+  private shuffleCells(size: number, grid: Grid): void {
+    for (let x = 0; x < size; x++) {
+      for (let y = 0; y < size; y++) {
+        const x1 = Math.floor(Math.random() * size)
+        const y1 = Math.floor(Math.random() * size)
+
+        const temp = grid[x][y]
+        grid[x][y] = grid[x1][y1]
+        grid[x1][y1] = temp
+      }
+    }
+  }
+
+  private setBombCountOnNeutralCells(size: number, grid: Grid): void {
     for (let x = 0; x < size; x++) {
       for (let y = 0; y < size; y++) {
         const cell = grid[x][y]
@@ -42,8 +61,6 @@ export class GridGenerator implements IGridGenerator {
         cell.setNeighbors(neighbors)
       }
     }
-
-    return grid
   }
 
   private countBombsNearCell(neighbors: Cell[]) {
