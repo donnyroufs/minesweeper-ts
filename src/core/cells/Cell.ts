@@ -1,4 +1,4 @@
-import { Position } from "./Position"
+import { Position } from "../shared"
 
 export abstract class Cell {
   private _isRevealed = false

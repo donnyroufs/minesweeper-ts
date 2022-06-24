@@ -1,6 +1,5 @@
-import { GameStatus } from "../GameStatus"
-import { Grid } from "../Grid"
-import { IGameEvent } from "../IGameEvent"
+import { GameStatus, IGameEvent } from "../shared"
+import { Grid } from "../board"
 
 export class GameConditionUpdatedEvent implements IGameEvent {
   public readonly gameStatus: GameStatus

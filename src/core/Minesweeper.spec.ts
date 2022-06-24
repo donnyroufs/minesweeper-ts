@@ -1,16 +1,9 @@
 import { mock } from "jest-mock-extended"
-
-import { Board } from "./Board"
-import { Bomb } from "./Bomb"
-import { GameStatus } from "./GameStatus"
-import { Grid } from "./Grid"
-import { IEventBus } from "./IEventBus"
-import { IGridGenerator } from "./IGridGenerator"
+import { IGridGenerator, Grid, Board, UnknownCellException } from "./board"
+import { Neutral, Bomb } from "./cells"
 import { Minesweeper } from "./Minesweeper"
-import { Neutral } from "./Neutral"
-import { Position } from "./Position"
+import { Position, IEventBus, GameStatus } from "./shared"
 import { BoardBuilder } from "./testHelpers/BoardBuilder"
-import { UnknownCellException } from "./UnknownCellException"
 
 class FakeGridGenerator implements IGridGenerator {
   public constructor(private readonly _grid: Grid | null = null) {}

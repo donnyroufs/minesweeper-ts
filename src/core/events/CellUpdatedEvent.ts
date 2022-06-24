@@ -1,6 +1,6 @@
-import { Cell } from "../Cell"
-import { Grid } from "../Grid"
-import { IGameEvent } from "../IGameEvent"
+import { Cell } from "../cells"
+import { Grid } from "../board"
+import { IGameEvent } from "../shared"
 
 export class CellUpdatedEvent implements IGameEvent {
   public readonly cell: Readonly<Cell>

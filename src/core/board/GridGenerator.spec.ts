@@ -1,6 +1,5 @@
-import { Bomb } from "./Bomb"
+import { Bomb, Neutral } from "../cells"
 import { GridGenerator } from "./GridGenerator"
-import { Neutral } from "./Neutral"
 
 describe("grid generator", () => {
   test.each([

@@ -1,11 +1,8 @@
-import { Bomb } from "./Bomb"
-import { Cell } from "./Cell"
+import { Position, RandomNumberGenerator, Range } from "../shared"
+
+import { Bomb, Cell, Neutral } from "../cells"
 import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
-import { Neutral } from "./Neutral"
-import { Position } from "./Position"
-import { RandomNumberGenerator } from "./RandomNumberGenerator"
-import { Range } from "./Range"
 
 export class GridGenerator implements IGridGenerator {
   public generate(size: number, bombCount: number): Grid {

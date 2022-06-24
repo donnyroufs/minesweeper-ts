@@ -1,16 +1,19 @@
-import { Board } from "./Board"
-import { Bomb } from "./Bomb"
-import { Cell } from "./Cell"
+import { Board } from "./board"
+import { Cell, Neutral, Bomb } from "./cells"
 import {
-  BoardRevealedEvent,
+  GameStartedEvent,
   CellUpdatedEvent,
   GameConditionUpdatedEvent,
+  BoardRevealedEvent,
 } from "./events"
-import { GameStartedEvent } from "./events/GameStartedEvent"
-import { GameStatus } from "./GameStatus"
-import { EventBus, EventHandlerFn, GameEvents, IEventBus } from "./IEventBus"
-import { Neutral } from "./Neutral"
-import { Position } from "./Position"
+import {
+  IEventBus,
+  GameStatus,
+  EventBus,
+  Position,
+  GameEvents,
+  EventHandlerFn,
+} from "./shared"
 
 export class Minesweeper {
   private readonly _board: Board

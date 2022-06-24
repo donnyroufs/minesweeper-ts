@@ -1,7 +1,4 @@
-import { Board } from "../Board"
-import { BoardOpts } from "../BoardOpts"
-import { GridGenerator } from "../GridGenerator"
-import { IGridGenerator } from "../IGridGenerator"
+import { Board, BoardOpts, GridGenerator, IGridGenerator } from "../board"
 
 export class BoardBuilder {
   private _board!: Board

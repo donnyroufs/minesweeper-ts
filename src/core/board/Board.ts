@@ -1,9 +1,9 @@
+import { Position } from "../shared"
+
 import { BoardOpts } from "./BoardOpts"
-import { Bomb } from "./Bomb"
-import { Cell } from "./Cell"
+import { Bomb, Cell } from "../cells"
 import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
-import { Position } from "./Position"
 import { UnknownCellException } from "./UnknownCellException"
 
 // NOTE: Check for invariants against cells that might have a position that does not exist?

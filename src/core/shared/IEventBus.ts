@@ -3,7 +3,7 @@ import {
   GameConditionUpdatedEvent,
   GameStartedEvent,
   BoardRevealedEvent,
-} from "./events"
+} from "../events"
 
 export type EventHandlerFn<TEvent> = (data: TEvent) => void
 export type GameEvents = {

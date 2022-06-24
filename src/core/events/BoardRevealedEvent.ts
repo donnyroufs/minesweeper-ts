@@ -1,5 +1,5 @@
-import { Grid } from "../Grid"
-import { IGameEvent } from "../IGameEvent"
+import { Grid } from "../board"
+import { IGameEvent } from "../shared"
 
 export class BoardRevealedEvent implements IGameEvent {
   public readonly grid: Readonly<Grid>
