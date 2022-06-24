@@ -1,6 +1,10 @@
+import { mock } from "jest-mock-extended"
+
+import { Board } from "./Board"
 import { Bomb } from "./Bomb"
 import { GameStatus } from "./GameStatus"
 import { Grid } from "./Grid"
+import { IEventBus } from "./IEventBus"
 import { IGridGenerator } from "./IGridGenerator"
 import { Minesweeper } from "./Minesweeper"
 import { Neutral } from "./Neutral"
@@ -83,13 +87,19 @@ class FakeGridGenerator implements IGridGenerator {
   }
 }
 
+const mockedEventBus = mock<IEventBus>()
+
+function makeGame(board: Board): Minesweeper {
+  return new Minesweeper(board, mockedEventBus)
+}
+
 describe("minesweeper", () => {
   test("on reveal we reveal the cell", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
 
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
     const pos = new Position(0, 0)
 
     game.start()
@@ -104,7 +114,7 @@ describe("minesweeper", () => {
       .witFakeGridGenerator(FakeGridGenerator.makeWithRevealedCells())
       .build()
 
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
     const pos = new Position(0, 0)
 
     game.start()
@@ -119,7 +129,7 @@ describe("minesweeper", () => {
       .witFakeGridGenerator(FakeGridGenerator.makeEmptyGrid())
       .build()
 
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
     const pos = new Position(0, 0)
     game.start()
 
@@ -132,7 +142,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(FakeGridGenerator.makeWithBomb())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
 
     game.start()
 
@@ -145,7 +155,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
 
     game.start()
 
@@ -159,7 +169,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
 
     game.start()
 
@@ -170,7 +180,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
 
     expect(game.getGameStatus()).toBe(GameStatus.Idle)
 
@@ -183,7 +193,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
 
     const pos = new Position(0, 0)
 
@@ -198,7 +208,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
 
     const pos = new Position(0, 0)
     game.start()
@@ -213,7 +223,8 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(FakeGridGenerator.makeWithEmptyCells())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
+
     const revealedPositions = [new Position(0, 3), new Position(0, 4)]
 
     game.start()
@@ -230,7 +241,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(FakeGridGenerator.makeWithEmptyCells())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
     const expectedRevealedCount = 1
 
     game.start()
@@ -249,7 +260,7 @@ describe("minesweeper", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(FakeGridGenerator.makeWithEmptyCellsAndOneFlagged())
       .build()
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
     const unrevealedPosition = new Position(0, 3)
 
     game.start()
@@ -264,7 +275,7 @@ describe("minesweeper", () => {
       .witFakeGridGenerator(new FakeGridGenerator())
       .build()
     const pos = new Position(0, 0)
-    const game = new Minesweeper(board)
+    const game = makeGame(board)
     game.start()
 
     board.getCell(pos).flag()
@@ -285,7 +296,7 @@ describe("minesweeper", () => {
     (positions, generator) => {
       // eslint-disable-next-line newline-per-chained-call
       const board = new BoardBuilder().witFakeGridGenerator(generator).build()
-      const game = new Minesweeper(board)
+      const game = makeGame(board)
 
       game.start()
 

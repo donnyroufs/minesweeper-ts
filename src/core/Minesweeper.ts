@@ -1,26 +1,34 @@
 import { Board } from "./Board"
 import { Bomb } from "./Bomb"
 import { Cell } from "./Cell"
+import {
+  BoardRevealedEvent,
+  CellUpdatedEvent,
+  GameConditionUpdatedEvent,
+} from "./events"
+import { GameStartedEvent } from "./events/GameStartedEvent"
 import { GameStatus } from "./GameStatus"
-import { IRenderer } from "./IRenderer"
+import { EventBus, EventHandlerFn, GameEvents, IEventBus } from "./IEventBus"
 import { Neutral } from "./Neutral"
 import { Position } from "./Position"
 
 export class Minesweeper {
   private readonly _board: Board
+  private readonly _eventBus: IEventBus
   private _gameStatus: GameStatus = GameStatus.Idle
-  private _renderer: IRenderer
 
-  public constructor(board: Board, renderer?: IRenderer) {
+  public constructor(board: Board, eventBus: IEventBus = new EventBus()) {
     this._board = board
-    // TODO: Refactor
-    this._renderer = renderer || { onStart(grid) {} }
+    this._eventBus = eventBus
   }
 
   public start(): void {
     if (this.isPlaying()) return
 
-    this._renderer.onStart(this._board.getGrid())
+    this._eventBus.emit(
+      "game-started",
+      new GameStartedEvent(this._board.getGrid())
+    )
 
     this._gameStatus = GameStatus.Playing
   }
@@ -31,6 +39,10 @@ export class Minesweeper {
     const cell = this._board.getCell(position)
 
     cell.reveal()
+    this._eventBus.emit(
+      "cell-updated",
+      new CellUpdatedEvent(cell, this._board.getGrid())
+    )
 
     this.revealNeighborsWhenNoBombsAround(cell)
     this.determineWinCondition(cell)
@@ -40,11 +52,23 @@ export class Minesweeper {
   public flag(position: Position): void {
     if (!this.isPlaying()) return
 
-    this._board.getCell(position).flag()
+    const cell = this._board.getCell(position)
+    cell.flag()
+    this._eventBus.emit(
+      "cell-updated",
+      new CellUpdatedEvent(cell, this._board.getGrid())
+    )
   }
 
   public getGameStatus(): GameStatus {
     return this._gameStatus
+  }
+
+  public on<
+    TEvent extends keyof GameEvents,
+    TEventData extends GameEvents[TEvent]
+  >(eventName: TEvent, handler: EventHandlerFn<TEventData>): void {
+    this._eventBus.on<TEvent, TEventData>(eventName, handler)
   }
 
   private isPlaying(): boolean {
@@ -70,11 +94,19 @@ export class Minesweeper {
   private determineWinCondition(cell: Cell) {
     if (cell instanceof Bomb) {
       this._gameStatus = GameStatus.Lost
+      this._eventBus.emit(
+        "game-condition-updated",
+        new GameConditionUpdatedEvent(this._gameStatus, this._board.getGrid())
+      )
       return
     }
 
     if (!this._board.hasUnrevealedNeutrals()) {
       this._gameStatus = GameStatus.Won
+      this._eventBus.emit(
+        "game-condition-updated",
+        new GameConditionUpdatedEvent(this._gameStatus, this._board.getGrid())
+      )
       return
     }
   }
@@ -91,6 +123,11 @@ export class Minesweeper {
 
         if (cell.isFlagged()) cell.flag()
       })
+
+    this._eventBus.emit(
+      "board-revealed",
+      new BoardRevealedEvent(this._board.getGrid())
+    )
   }
 
   private isIdle(): boolean {

@@ -1,0 +1,30 @@
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.cell {
+  height: 24px;
+  width: 24px;
+  border: 2px solid rgb(194, 194, 194);
+  transition: all 0.1s ease-in;
+  background-color: rgb(229, 224, 255);
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &--revealed {
+    background: none;
+  }
+}
+
+.button {
+  padding: 0.4rem 1.5rem;
+  color: black;
+  background: none;
+  border: 1px solid #010101;
+  border-radius: 0.2em;
+  margin-top: 2rem;
+}
