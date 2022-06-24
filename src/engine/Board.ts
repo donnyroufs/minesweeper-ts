@@ -33,6 +33,11 @@ export class Board {
       .reduce((acc, curr) => (curr.isFlagged() ? acc + 1 : acc), 0)
   }
   public hasUnrevealedNeutrals(): boolean {
-    return this._grid.flat().some((c) => !c.isRevealed)
+    const res = this._grid
+      .flat()
+      .filter((c) => !(c instanceof Bomb))
+      .some((c) => !c.isRevealed())
+
+    return res
   }
 }
