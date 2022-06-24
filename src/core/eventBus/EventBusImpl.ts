@@ -24,7 +24,7 @@ export class EventBus implements IEventBus {
   >(eventName: TEvent, data: TEventData): void {
     const handlers = this._subscribers.get(eventName)!
 
-    handlers.forEach((handler) => handler(data))
+    handlers?.forEach((handler) => handler(data))
   }
 
   private exists(eventName: keyof GameEvents) {
