@@ -1,4 +1,5 @@
 import { BoardOpts } from "./BoardOpts"
+import { Bomb } from "./Bomb"
 import { Cell } from "./Cell"
 import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
@@ -32,6 +33,7 @@ export class Board {
       .flat()
       .reduce((acc, curr) => (curr.isFlagged() ? acc + 1 : acc), 0)
   }
+
   public hasUnrevealedNeutrals(): boolean {
     const res = this._grid
       .flat()
