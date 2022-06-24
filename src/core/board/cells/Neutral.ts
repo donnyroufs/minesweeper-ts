@@ -1,6 +1,6 @@
 import { Bomb } from "./Bomb"
 import { Cell } from "./Cell"
-import { Position } from "../shared"
+import { Position } from "../../shared"
 
 export class Neutral extends Cell {
   private _neighbors: Cell[] = []

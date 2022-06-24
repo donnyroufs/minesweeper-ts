@@ -1,7 +1,7 @@
 import { Position } from "../shared"
 
 import { BoardOpts } from "./BoardOpts"
-import { Bomb, Cell } from "../cells"
+import { Bomb, Cell } from "./cells"
 import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
 import { UnknownCellException } from "./UnknownCellException"

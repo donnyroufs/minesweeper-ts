@@ -1,3 +1,3 @@
-import { Cell } from "../cells"
+import { Cell } from "./cells"
 
 export type Grid = Cell[][]

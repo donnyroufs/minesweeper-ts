@@ -24,11 +24,6 @@ export class EventBus implements IEventBus {
   >(eventName: TEvent, data: TEventData): void {
     const handlers = this._subscribers.get(eventName)!
 
-    if (!handlers) {
-      console.warn(`does not have any listeners.`, eventName)
-      return
-    }
-
     handlers.forEach((handler) => handler(data))
   }
 

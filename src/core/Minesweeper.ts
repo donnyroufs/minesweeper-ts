@@ -1,5 +1,4 @@
-import { Board } from "./board"
-import { Cell, Neutral, Bomb } from "./cells"
+import { Board, Cell, Neutral, Bomb } from "./board"
 import {
   GameStartedEvent,
   CellUpdatedEvent,

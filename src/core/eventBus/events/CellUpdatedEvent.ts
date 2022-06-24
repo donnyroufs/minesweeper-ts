@@ -1,5 +1,4 @@
-import { Cell } from "../../cells"
-import { Grid } from "../../board"
+import { Grid, Cell } from "../../board"
 import { IGameEvent } from "../../shared"
 
 export class CellUpdatedEvent implements IGameEvent {

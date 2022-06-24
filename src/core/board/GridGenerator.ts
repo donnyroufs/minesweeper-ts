@@ -1,6 +1,6 @@
 import { Position, RandomNumberGenerator, Range } from "../shared"
 
-import { Bomb, Cell, Neutral } from "../cells"
+import { Bomb, Cell, Neutral } from "./cells"
 import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
 

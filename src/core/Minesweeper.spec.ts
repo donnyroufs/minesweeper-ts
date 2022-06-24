@@ -1,6 +1,13 @@
 import { mock } from "jest-mock-extended"
-import { IGridGenerator, Grid, Board, UnknownCellException } from "./board"
-import { Neutral, Bomb } from "./cells"
+import {
+  IGridGenerator,
+  Grid,
+  Board,
+  UnknownCellException,
+  Neutral,
+  Bomb,
+  Cell,
+} from "./board"
 import { Minesweeper } from "./Minesweeper"
 import { IEventBus } from "./eventBus"
 import { BoardBuilder } from "./testHelpers/BoardBuilder"
