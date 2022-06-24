@@ -29,6 +29,6 @@ export abstract class Cell {
   }
 
   public flag(): void {
-    this._isFlagged = true
+    this._isFlagged = !this._isFlagged
   }
 }

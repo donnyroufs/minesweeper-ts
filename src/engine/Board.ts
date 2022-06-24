@@ -27,6 +27,11 @@ export class Board {
     return cell
   }
 
+  public getFlagCount(): number {
+    return this._grid
+      .flat()
+      .reduce((acc, curr) => (curr.isFlagged() ? acc + 1 : acc), 0)
+  }
   public hasUnrevealedNeutrals(): boolean {
     return this._grid.flat().some((c) => !c.isRevealed)
   }
