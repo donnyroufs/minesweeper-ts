@@ -37,16 +37,16 @@ export class GridGenerator implements IGridGenerator {
           continue
         }
 
-        cell.setBombCount(this.countBombsNearCell(grid, cell))
+        const neighbors = this.getNeighbors(grid, cell.getPosition())
+        cell.setBombCount(this.countBombsNearCell(neighbors))
+        cell.setNeighbors(neighbors)
       }
     }
 
     return grid
   }
 
-  private countBombsNearCell(grid: Grid, cell: Cell) {
-    const neighbors = this.getNeighbors(grid, cell.getPosition())
-
+  private countBombsNearCell(neighbors: Cell[]) {
     return neighbors.reduce((acc, curr) => {
       if (curr instanceof Bomb) {
         acc += 1

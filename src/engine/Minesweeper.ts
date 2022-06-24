@@ -1,6 +1,8 @@
 import { Board } from "./Board"
 import { Bomb } from "./Bomb"
+import { Cell } from "./Cell"
 import { GameStatus } from "./GameStatus"
+import { Neutral } from "./Neutral"
 import { Position } from "./Position"
 
 export class Minesweeper {
@@ -24,15 +26,8 @@ export class Minesweeper {
 
     cell.reveal()
 
-    if (cell instanceof Bomb) {
-      this._gameStatus = GameStatus.Lost
-      return
-    }
-
-    if (!this._board.hasUnrevealedNeutrals()) {
-      this._gameStatus = GameStatus.Won
-      return
-    }
+    this.revealNeighborsWhenNoBombsAround(cell)
+    this.determineWinCondition(cell)
   }
 
   public flag(position: Position): void {
@@ -47,5 +42,29 @@ export class Minesweeper {
 
   private isPlaying(): boolean {
     return this._gameStatus === GameStatus.Playing
+  }
+
+  private revealNeighborsWhenNoBombsAround(cell: Cell) {
+    if (
+      cell instanceof Neutral &&
+      cell.getBombCount() === 0 &&
+      !cell.isFlagged()
+    ) {
+      cell.getNeighbors().forEach((neighbor) => {
+        neighbor.reveal()
+      })
+    }
+  }
+
+  private determineWinCondition(cell: Cell) {
+    if (cell instanceof Bomb) {
+      this._gameStatus = GameStatus.Lost
+      return
+    }
+
+    if (!this._board.hasUnrevealedNeutrals()) {
+      this._gameStatus = GameStatus.Won
+      return
+    }
   }
 }
