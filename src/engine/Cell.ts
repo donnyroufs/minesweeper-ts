@@ -28,6 +28,10 @@ export abstract class Cell {
     this._isRevealed = true
   }
 
+  public setPosition(position: Position) {
+    this._position = position
+  }
+
   public flag(): void {
     this._isFlagged = !this._isFlagged
   }

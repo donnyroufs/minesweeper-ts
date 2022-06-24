@@ -2,19 +2,25 @@ import { Board } from "./Board"
 import { Bomb } from "./Bomb"
 import { Cell } from "./Cell"
 import { GameStatus } from "./GameStatus"
+import { IRenderer } from "./IRenderer"
 import { Neutral } from "./Neutral"
 import { Position } from "./Position"
 
 export class Minesweeper {
   private readonly _board: Board
   private _gameStatus: GameStatus = GameStatus.Idle
+  private _renderer: IRenderer
 
-  public constructor(board: Board) {
+  public constructor(board: Board, renderer?: IRenderer) {
     this._board = board
+    // TODO: Refactor
+    this._renderer = renderer || { onStart(grid) {} }
   }
 
   public start(): void {
     if (this.isPlaying()) return
+
+    this._renderer.onStart(this._board.getGrid())
 
     this._gameStatus = GameStatus.Playing
   }
@@ -28,6 +34,7 @@ export class Minesweeper {
 
     this.revealNeighborsWhenNoBombsAround(cell)
     this.determineWinCondition(cell)
+    this.revealBoardWhenGameOver()
   }
 
   public flag(position: Position): void {
@@ -50,9 +57,13 @@ export class Minesweeper {
       cell.getBombCount() === 0 &&
       !cell.isFlagged()
     ) {
-      cell.getNeighbors().forEach((neighbor) => {
-        neighbor.reveal()
-      })
+      cell
+        .getNeighbors()
+        .filter((c) => !(c instanceof Bomb))
+        .filter((c) => !c.isRevealed())
+        .forEach((neighbor) => {
+          this.reveal(neighbor.getPosition())
+        })
     }
   }
 
@@ -66,5 +77,23 @@ export class Minesweeper {
       this._gameStatus = GameStatus.Won
       return
     }
+  }
+
+  private revealBoardWhenGameOver() {
+    if (this.isIdle()) return
+    if (this.isPlaying()) return
+
+    this._board
+      .getGrid()
+      .flat()
+      .forEach((cell) => {
+        cell.reveal()
+
+        if (cell.isFlagged()) cell.flag()
+      })
+  }
+
+  private isIdle(): boolean {
+    return this._gameStatus === GameStatus.Idle
   }
 }

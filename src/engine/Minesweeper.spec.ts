@@ -8,6 +8,81 @@ import { Position } from "./Position"
 import { BoardBuilder } from "./testHelpers/BoardBuilder"
 import { UnknownCellException } from "./UnknownCellException"
 
+class FakeGridGenerator implements IGridGenerator {
+  public constructor(private readonly _grid: Grid | null = null) {}
+
+  public generate(): Grid {
+    if (this._grid !== null) {
+      return this._grid
+    }
+
+    return [
+      [
+        new Neutral(new Position(0, 0)),
+        new Neutral(new Position(0, 1)),
+        new Bomb(new Position(0, 2)),
+      ],
+    ]
+  }
+
+  public static makeEmptyGrid(): FakeGridGenerator {
+    return new FakeGridGenerator([[]])
+  }
+
+  public static makeWithBomb(): FakeGridGenerator {
+    return new FakeGridGenerator([[new Bomb(new Position(0, 0))]])
+  }
+
+  public static makeWithFlag(): FakeGridGenerator {
+    const bomb = new Bomb(new Position(0, 2))
+    bomb.flag()
+
+    return new FakeGridGenerator([
+      [new Neutral(new Position(0, 0)), new Neutral(new Position(0, 1)), bomb],
+    ])
+  }
+
+  public static makeWithRevealedCells(): FakeGridGenerator {
+    const neutral = new Neutral(new Position(0, 0))
+    neutral.reveal()
+
+    const grid = [[neutral]]
+
+    return new FakeGridGenerator(grid)
+  }
+
+  public static makeWithEmptyCells(): FakeGridGenerator {
+    const n1 = new Neutral(new Position(0, 0), 1)
+    const bomb = new Bomb(new Position(0, 1))
+    const n2 = new Neutral(new Position(0, 2), 1)
+    const n3 = new Neutral(new Position(0, 3), 0)
+    const n4 = new Neutral(new Position(0, 4), 0)
+
+    n1.setNeighbors([bomb])
+    n2.setNeighbors([bomb])
+    n3.setNeighbors([n2, n4])
+    n4.setNeighbors([n3])
+
+    return new FakeGridGenerator([[n1, bomb, n2, n3, n4]])
+  }
+
+  public static makeWithEmptyCellsAndOneFlagged(): FakeGridGenerator {
+    const n1 = new Neutral(new Position(0, 0), 1)
+    const bomb = new Bomb(new Position(0, 1))
+    const n2 = new Neutral(new Position(0, 2), 1)
+    const n3 = new Neutral(new Position(0, 3), 0)
+    const n4 = new Neutral(new Position(0, 4), 0)
+    n4.flag()
+
+    n1.setNeighbors([bomb])
+    n2.setNeighbors([bomb])
+    n3.setNeighbors([n2, n4])
+    n4.setNeighbors([n3])
+
+    return new FakeGridGenerator([[n1, bomb, n2, n3, n4]])
+  }
+}
+
 describe("minesweeper", () => {
   test("on reveal we reveal the cell", () => {
     const board = new BoardBuilder()
@@ -134,7 +209,7 @@ describe("minesweeper", () => {
     expect(board.getCell(pos).isRevealed()).toBe(false)
   })
 
-  test("when we click on a neutral cell with no bombs near it, we recusivly reveal the cells", () => {
+  test("when we click on a neutral cell with no bombs near it, we recusivly reveal the cells", async () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(FakeGridGenerator.makeWithEmptyCells())
       .build()
@@ -183,53 +258,7 @@ describe("minesweeper", () => {
 
     expect(board.getCell(unrevealedPosition).isFlagged()).toBe(false)
   })
-})
 
-class FakeGridGenerator implements IGridGenerator {
-  public constructor(private readonly _grid: Grid | null = null) {}
-
-  public generate(): Grid {
-    if (this._grid !== null) {
-      return this._grid
-    }
-
-    return [
-      [
-        new Neutral(new Position(0, 0)),
-        new Neutral(new Position(0, 1)),
-        new Bomb(new Position(0, 2)),
-      ],
-    ]
-  }
-
-  public static makeEmptyGrid(): FakeGridGenerator {
-    return new FakeGridGenerator([[]])
-  }
-
-  public static makeWithBomb(): FakeGridGenerator {
-    return new FakeGridGenerator([[new Bomb(new Position(0, 0))]])
-  }
-
-  public static makeWithRevealedCells(): FakeGridGenerator {
-    const neutral = new Neutral(new Position(0, 0))
-    neutral.reveal()
-
-    const grid = [[neutral]]
-
-    return new FakeGridGenerator(grid)
-  }
-
-  public static makeWithEmptyCells(): FakeGridGenerator {
-    const n1 = new Neutral(new Position(0, 0), 1)
-    const bomb = new Bomb(new Position(0, 1))
-    const n2 = new Neutral(new Position(0, 2), 1)
-    const n3 = new Neutral(new Position(0, 3), 0)
-    const n4 = new Neutral(new Position(0, 4), 0)
-
-    n1.setNeighbors([bomb])
-    n2.setNeighbors([bomb])
-    n3.setNeighbors([n2, n4])
-    n4.setNeighbors([n3])
   test("we can remove a set flag", () => {
     const board = new BoardBuilder()
       .witFakeGridGenerator(new FakeGridGenerator())
@@ -238,27 +267,33 @@ class FakeGridGenerator implements IGridGenerator {
     const game = new Minesweeper(board)
     game.start()
 
-    return new FakeGridGenerator([[n1, bomb, n2, n3, n4]])
-  }
-
-  public static makeWithEmptyCellsAndOneFlagged(): FakeGridGenerator {
-    const n1 = new Neutral(new Position(0, 0), 1)
-    const bomb = new Bomb(new Position(0, 1))
-    const n2 = new Neutral(new Position(0, 2), 1)
-    const n3 = new Neutral(new Position(0, 3), 0)
-    const n4 = new Neutral(new Position(0, 4), 0)
-    n4.flag()
     board.getCell(pos).flag()
     expect(board.getCell(pos).isFlagged()).toBe(true)
 
-    n1.setNeighbors([bomb])
-    n2.setNeighbors([bomb])
-    n3.setNeighbors([n2, n4])
-    n4.setNeighbors([n3])
     board.getCell(pos).flag()
     expect(board.getCell(pos).isFlagged()).toBe(false)
   })
 
-    return new FakeGridGenerator([[n1, bomb, n2, n3, n4]])
-  }
-}
+  test.each([
+    [
+      [new Position(0, 0), new Position(0, 1)],
+      FakeGridGenerator.makeWithFlag(),
+    ],
+    [[new Position(0, 2)], new FakeGridGenerator()],
+  ])(
+    "on lose or win we reveal the entire board and remove all flags",
+    (positions, generator) => {
+      const board = new BoardBuilder()
+        .witFakeGridGenerator(generator)
+        .build()
+      const game = new Minesweeper(board)
+
+      game.start()
+
+      positions.forEach((pos) => game.reveal(pos))
+
+      expect(board.hasUnrevealedNeutrals()).toBe(false)
+      expect(board.getFlagCount()).toBe(0)
+    }
+  )
+})
