@@ -4,6 +4,8 @@ import { Grid } from "./Grid"
 import { IGridGenerator } from "./IGridGenerator"
 import { Neutral } from "./Neutral"
 import { Position } from "./Position"
+import { RandomNumberGenerator } from "./RandomNumberGenerator"
+import { Range } from "./Range"
 
 export class GridGenerator implements IGridGenerator {
   public generate(size: number, bombCount: number): Grid {
@@ -30,8 +32,8 @@ export class GridGenerator implements IGridGenerator {
     let bombsPlaced = 0
 
     while (bombsPlaced < bombCount) {
-      const randomX = Math.floor(Math.random() * size)
-      const randomY = Math.floor(Math.random() * size)
+      const randomX = RandomNumberGenerator.generate(new Range(0, size))
+      const randomY = RandomNumberGenerator.generate(new Range(0, size))
 
       const position = new Position(randomX, randomY)
 
