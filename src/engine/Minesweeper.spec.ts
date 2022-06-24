@@ -230,6 +230,13 @@ class FakeGridGenerator implements IGridGenerator {
     n2.setNeighbors([bomb])
     n3.setNeighbors([n2, n4])
     n4.setNeighbors([n3])
+  test("we can remove a set flag", () => {
+    const board = new BoardBuilder()
+      .witFakeGridGenerator(new FakeGridGenerator())
+      .build()
+    const pos = new Position(0, 0)
+    const game = new Minesweeper(board)
+    game.start()
 
     return new FakeGridGenerator([[n1, bomb, n2, n3, n4]])
   }
@@ -241,11 +248,16 @@ class FakeGridGenerator implements IGridGenerator {
     const n3 = new Neutral(new Position(0, 3), 0)
     const n4 = new Neutral(new Position(0, 4), 0)
     n4.flag()
+    board.getCell(pos).flag()
+    expect(board.getCell(pos).isFlagged()).toBe(true)
 
     n1.setNeighbors([bomb])
     n2.setNeighbors([bomb])
     n3.setNeighbors([n2, n4])
     n4.setNeighbors([n3])
+    board.getCell(pos).flag()
+    expect(board.getCell(pos).isFlagged()).toBe(false)
+  })
 
     return new FakeGridGenerator([[n1, bomb, n2, n3, n4]])
   }
