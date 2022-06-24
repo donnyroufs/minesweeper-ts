@@ -52,11 +52,11 @@ class FakeGridGenerator implements IGridGenerator {
   }
 
   public static makeWithEmptyCells(): FakeGridGenerator {
-    const n1 = new Neutral(new Position(0, 0), 1)
+    const n1 = new Neutral(new Position(0, 0))
     const bomb = new Bomb(new Position(0, 1))
-    const n2 = new Neutral(new Position(0, 2), 1)
-    const n3 = new Neutral(new Position(0, 3), 0)
-    const n4 = new Neutral(new Position(0, 4), 0)
+    const n2 = new Neutral(new Position(0, 2))
+    const n3 = new Neutral(new Position(0, 3))
+    const n4 = new Neutral(new Position(0, 4))
 
     n1.setNeighbors([bomb])
     n2.setNeighbors([bomb])
@@ -67,11 +67,11 @@ class FakeGridGenerator implements IGridGenerator {
   }
 
   public static makeWithEmptyCellsAndOneFlagged(): FakeGridGenerator {
-    const n1 = new Neutral(new Position(0, 0), 1)
+    const n1 = new Neutral(new Position(0, 0))
     const bomb = new Bomb(new Position(0, 1))
-    const n2 = new Neutral(new Position(0, 2), 1)
-    const n3 = new Neutral(new Position(0, 3), 0)
-    const n4 = new Neutral(new Position(0, 4), 0)
+    const n2 = new Neutral(new Position(0, 2))
+    const n3 = new Neutral(new Position(0, 3))
+    const n4 = new Neutral(new Position(0, 4))
     n4.flag()
 
     n1.setNeighbors([bomb])
@@ -283,9 +283,8 @@ describe("minesweeper", () => {
   ])(
     "on lose or win we reveal the entire board and remove all flags",
     (positions, generator) => {
-      const board = new BoardBuilder()
-        .witFakeGridGenerator(generator)
-        .build()
+      // eslint-disable-next-line newline-per-chained-call
+      const board = new BoardBuilder().witFakeGridGenerator(generator).build()
       const game = new Minesweeper(board)
 
       game.start()
