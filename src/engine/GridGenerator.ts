@@ -41,7 +41,10 @@ export class GridGenerator implements IGridGenerator {
         const y1 = Math.floor(Math.random() * size)
 
         const temp = grid[x][y]
-        grid[x][y] = grid[x1][y1]
+        const replacer = grid[x1][y1]
+        replacer.setPosition(new Position(x, y))
+        temp.setPosition(new Position(x1, y1))
+        grid[x][y] = replacer
         grid[x1][y1] = temp
       }
     }
