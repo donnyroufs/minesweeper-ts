@@ -8,8 +8,7 @@ https://user-images.githubusercontent.com/48981403/175698777-6b68fb2e-23fc-40dc-
 - [x] Play game on the web
 - [ ] Play game in TUI
 - [ ] Add restart functionality
+- [ ] Only expose DTOs in emitted events
 
 - [ ] Add save/load feature
 - [ ] Add Replay Mode
-
-
