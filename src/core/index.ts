@@ -1,5 +1,5 @@
 export * from "./board"
 export * from "./cells"
-export * from "./events"
+export * from "./eventBus"
 export * from "./shared"
 export * from "./Minesweeper"

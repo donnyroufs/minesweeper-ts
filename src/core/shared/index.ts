@@ -1,6 +1,5 @@
 export * from "./Constructable"
 export * from "./GameStatus"
-export * from "./IEventBus"
 export * from "./IGameEvent"
 export * from "./Position"
 export * from "./RandomNumberGenerator"

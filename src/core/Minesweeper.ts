@@ -5,15 +5,12 @@ import {
   CellUpdatedEvent,
   GameConditionUpdatedEvent,
   BoardRevealedEvent,
-} from "./events"
-import {
   IEventBus,
-  GameStatus,
   EventBus,
-  Position,
   GameEvents,
   EventHandlerFn,
-} from "./shared"
+} from "./eventBus"
+import { GameStatus, Position } from "./shared"
 
 export class Minesweeper {
   private readonly _board: Board

@@ -1,28 +1,6 @@
-import {
-  CellUpdatedEvent,
-  GameConditionUpdatedEvent,
-  GameStartedEvent,
-  BoardRevealedEvent,
-} from "../events"
-
-export type EventHandlerFn<TEvent> = (data: TEvent) => void
-export type GameEvents = {
-  "cell-updated": CellUpdatedEvent
-  "game-condition-updated": GameConditionUpdatedEvent
-  "game-started": GameStartedEvent
-  "board-revealed": BoardRevealedEvent
-}
-
-export interface IEventBus {
-  emit<TEvent extends keyof GameEvents, TEventData extends GameEvents[TEvent]>(
-    eventName: TEvent,
-    data: TEventData
-  ): void
-  on<TEvent extends keyof GameEvents, TEventData extends GameEvents[TEvent]>(
-    event: TEvent,
-    handler: EventHandlerFn<TEventData>
-  ): void
-}
+import { EventHandlerFn } from "./EventHandlerFn"
+import { GameEvents } from "./GameEvents"
+import { IEventBus } from "./IEventBus"
 
 export class EventBus implements IEventBus {
   private readonly _subscribers: Map<keyof GameEvents, EventHandlerFn<any>[]> =
