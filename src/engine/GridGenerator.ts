@@ -76,24 +76,13 @@ export class GridGenerator implements IGridGenerator {
     }, 0)
   }
 
-  private getNeighbors(grid: Grid, pos: Position) {
-    const rowLimit = grid.length - 1
-    const columnLimit = grid[0].length - 1
-    const neighbors: Cell[] = []
+  private getNeighbors(grid: Grid, { x, y }: Position): Cell[] {
+    const neighbors = []
 
-    for (
-      let x = Math.max(0, pos.x - 1);
-      x <= Math.min(pos.y + 1, columnLimit);
-      x++
-    ) {
-      for (
-        let y = Math.max(0, pos.x - 1);
-        y <= Math.min(pos.x + 1, rowLimit);
-        y++
-      ) {
-        if (x !== pos.y || y !== pos.x) {
-          neighbors.push(grid[x][y])
-        }
+    for (let xOffset = -1; xOffset <= 1; xOffset++) {
+      for (let yOffset = -1; yOffset <= 1; yOffset++) {
+        const tile = grid[x + xOffset]?.[y + yOffset]
+        if (tile) neighbors.push(tile)
       }
     }
 
